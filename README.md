@@ -1,5 +1,7 @@
 # Original Repository can be found at: https://github.com/microsoft/muzic/tree/main/museformer
 
+# If you have difficulty running the code, there exists a zipped directory with the entire repo in its last working format (with checkpoints + dataset) at https://drive.google.com/drive/u/0/folders/1gLgyojt23l66Rj7OwOUglLk5WxuveYHv
+
 # Tuning to Bach using Museformer
 Please download checkpoints from https://drive.google.com/drive/u/0/folders/1gLgyojt23l66Rj7OwOUglLk5WxuveYHv
 
