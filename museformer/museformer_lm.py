@@ -10,6 +10,7 @@ from .tools import arg_tools
 from .museformer_decoder import MuseformerDecoder
 
 DEFAULT_MAX_TARGET_POSITIONS = 100000
+USE_LORA = True
 
 def mark_only_lora_as_trainable(model: nn.Module) -> nn.Module:
     print("(LoRA) Freezing Weights...")
@@ -53,7 +54,8 @@ class MuseformerLanguageModel(FairseqLanguageModel):
     @classmethod
     def build_model(cls, args, task):
         decoder = MuseformerDecoder(args, task.target_dictionary)
-        decoder = mark_only_lora_as_trainable(decoder)
+        if USE_LORA:
+            decoder = mark_only_lora_as_trainable(decoder)
         print(args)
         return cls(decoder)
 

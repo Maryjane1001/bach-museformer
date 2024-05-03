@@ -1,3 +1,33 @@
+# Original Repository can be found at: https://github.com/microsoft/muzic/tree/main/museformer
+
+# Tuning to Bach using Museformer
+Please download checkpoints from https://drive.google.com/drive/u/0/folders/1gLgyojt23l66Rj7OwOUglLk5WxuveYHv
+
+Please download the Bach dataset from the following link: https://www.bachcentral.com/midiindexcomplete.html.
+The dataset is too large to be included in this repository. After downloading, rename the folder to 'bach',
+and run process.py in data/meta. This should output a preprocessed folder with the name 'bach-midi'. After this step,
+please follow the instructions below to binarize the dataset (starting from 1. Dataset), with midi_dir=data/bach-midi.
+
+All experiments were done on an AWS g5 instance. For best results, please use this with an Ubuntu AMI.
+Note: to train off of the baseline, modify the fairseq-train command to load_state_dict with strict=False, and to not load optimizer states.
+Otherwise, after setting up the environment with requirements.txt, follow the steps below.
+
+To modify whether LoRA is used in training or not, please navigate to museformer/museformer_lm.py, and set the constant USE_LORA to True or False.
+To modify LoRA ranks, navigate to museformer/attention/self_attention_v2s1/rpe_self_attention_v2s1.py. There should be a
+dictionary on top with the LoRA configurations.
+
+To generate:
+```bash
+MODEL_NAME=lora0 #other models can be found under checkpoints. model names are strings after 'mf-lmd6remi-'
+bash generate.sh $MODEL_NAME
+```
+
+To train then generate:
+```bash
+MODEL_NAME=lora0 #other models can be found under checkpoints. model names are strings after 'mf-lmd6remi-'
+bash train_generate.sh $MODEL_NAME
+```
+
 # Museformer
 
 [Museformer: Transformer with Fine- and Coarse-Grained Attention for Music Generation](https://arxiv.org/abs/2210.10349), by Botao Yu, Peiling Lu, Rui Wang, Wei Hu, Xu Tan, Wei Ye, Shikun Zhang, Tao Qin, Tie-Yan Liu, NeurIPS 2022, is a Transformer with a novel fine- and coarse-grained attention (FC-Attention) for music generation. Specifically, with the fine-grained attention, a token of a specific bar directly attends to all the tokens of the bars that are most relevant to music structures (e.g., the previous 1st, 2nd, 4th and 8th bars, selected via similarity statistics); with the coarse-grained attention, a token only attends to the summarization of the other bars rather than each token of them so as to reduce the computational cost. The advantages are two-fold. First, it can capture both music structure-related correlations via the fine-grained attention, and other contextual information via the coarse-grained attention. Second, it is efficient and can model over 3X longer music sequences compared to its full-attention counterpart. Both objective and subjective experimental results demonstrate its ability to generate long music sequences with high quality and better structures.
